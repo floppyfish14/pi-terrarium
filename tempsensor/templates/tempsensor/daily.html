@@ -1,0 +1,11 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'tempsensor/style.css' %}"/>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load("visualization", "1", {packages:['corechart', 'line',]});
+</script>
+
+<div id="line_chart_holder">
+{% include "tempsensor/temp_daily_line.html" %}
+</div>

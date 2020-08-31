@@ -1,0 +1,11 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'tempsensor/style.css' %}"/>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load("visualization", "1", {packages:["corechart", "treemap", "gauge"]});
+</script>
+
+<div id="gauge_holder">
+{% include "tempsensor/temp_gauge.html" %}
+</div>

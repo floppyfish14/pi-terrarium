@@ -1,0 +1,4 @@
+from django import forms
+
+class HumidityForm(forms.Form):
+        new_humidity = forms.IntegerField(label = 'Humidity', max_value='100')

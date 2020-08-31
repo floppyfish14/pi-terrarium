@@ -1,0 +1,25 @@
+import os
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "/home/pi/Programming/Python/Terrarium/Terrarium/")
+
+from tempsensor.models mport Temperature
+
+import Adafruit_DHT
+import datetime
+
+now = datetime.datetime.now()
+
+class Command(BaseCommand):
+    help = 'Grabs temperature and humidity. Writes to model.'
+    def handle(self):
+
+        while True:
+
+            temperature = Adafruit_DHT.read_retry(11,4)
+            fahrenheit = (int(temperature) * (9/5) + 32)
+
+            q = Temperature.objects.create(reading_time=now, Temp_F=fahrenheit)
+            q.save()
+
+            sleep(3)
+            self.stdout.write(self.style.SUCCESS("Successfully wrote data!"))

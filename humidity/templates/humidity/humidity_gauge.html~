@@ -1,0 +1,24 @@
+<div id="humidity_gauge" style="width: 305px; height:305px;">
+   <h3>Humidity Gauge</h3>
+    <div id="{{ humidity_chart.get_html_id }}" style="width: 300px; height: 300px;">
+     <script type="text/javascript">
+     google.setOnLoadCallback(drawChart{{ humidity_chart.get_html_id }});
+     function drawChart{{ humidity_chart.get_html_id }}() {
+     {% block humidity_chart_specific_arraytodatatable %}
+       var data = google.visualization.arrayToDataTable({{ humidity_chart.get_data_json|safe }});
+     {% endblock %}
+ 
+     {% if humidity_chart.get_options_json %}
+     var options ={{ humidity_chart.get_options_json|safe }}
+     {% else %}
+       var options = {};
+     {% endif %}
+ 
+     var chart = new google.visualization.Gauge(document.getElementById('{{ humidity_chart.get_html_id }}'));
+
+     chart.draw(data, options);
+     chart{{ humidity_chart.get_html_id }} = chart;
+     }
+   </script>
+  </div>
+ </div>

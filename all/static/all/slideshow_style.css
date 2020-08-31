@@ -1,0 +1,133 @@
+.led-red {
+ margin: -38px 7px;
+ width: 24px;
+ height:24px;
+ background-color: #F00;
+ border-radius: 50%;
+ box-shadow: rgba(0,0,0,0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;
+ float: right;
+}
+
+#led-box { 
+ border-top: 50px solid #7c7c7c;
+ clear: left; }
+
+* {
+ box-sizing: border-box;
+}
+
+.container {
+ margin: 0 auto;
+ width: 100%;
+}
+
+.mySlides {
+ display: none;
+}
+
+.prev, .next {
+ cursor: pointer;
+ position: fixed;
+ top: 50%;
+ width: auto;
+ margin-top: -22px;
+ padding: 16px;
+ color: white;
+ font-weight: bold;
+ font-size: 18px;
+ transition: 0.6s ease;
+ border-radius: 0 3px 3px 0;
+}
+
+.next {
+ right: 0;
+ border-radius: 3px 0 0 3px;
+}
+
+.prev, .next {
+ background-color: rgba(0,0,0,0.8);
+}
+
+.dot {
+ cursor: pointer;
+ height: 13px;
+ width: 13px;
+ margin: 0 2px;
+ background-color: #bbb;
+ border-radius: 50%;
+ display: inline-block;
+ transition: background-color 0.6s ease;
+}
+
+#dots {
+ text-align: inherit;
+ margin-top: 500px;
+}
+
+.active, .dot:hover {
+ background-color: #717171;
+}
+
+.slide {
+ left: -100px;
+ -webkit-animation: slide 0.8s forwards;
+ -webkit-animation-delay: 0s;
+ animation: slide 0.8s forwards;
+ animation-delay: 0s;
+}
+
+@-webkit-keyframes slide {
+ 100% { left: 0; }
+}
+
+@keyframes slide {
+ 100% { left: 0; }
+}
+
+#gauge_holder {
+ position: fixed;
+ margin-left: 37%;
+ margin-top: 10%;
+ display: block;
+}
+
+#daily_line_holder {
+ position: fixed;
+ margin-left: 29%;
+ margin-top: 10%;
+}
+
+#monthly_line_holder { 
+ position: fixed;
+ margin-left: 29%;
+ margin-top: 10%;
+}
+
+#humidity_gauge {
+ float:right;
+ margin-left: 50px;
+ }
+
+#temp_gauge {
+ clear: left;
+ float:left; 
+}
+#temp_daily_line {
+ clear: left;
+ float: left;
+}
+#humidity_daily_line {
+ float: right;
+ margin-left: 50px;
+}
+
+#temp_monthly_line {
+ clear: left;
+ float: left;
+}
+
+#humidity_monthly_line {
+ float: right;
+ margin-left: 50px;
+}
+

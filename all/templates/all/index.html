@@ -1,0 +1,61 @@
+{% extends "bootstrap_ui/bootstrap-skeleton.html" %}
+{% load bootstrap_ui_tags %}
+
+{% block head-css %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'all/style.css' %}"/>
+{% endblock %}
+
+{% block head-javascript %}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load("visualization", "1", {packages:["corechart", "gauge", "line"]});
+</script>
+
+<script type="text/javascript" src="{% static 'all/led.js' %}"></script>
+{% endblock %}
+{% block head-extension %}
+<div id="led-box">
+{% if water_level <= 20 %}
+    {% include "all/led_red.html" %}
+{% endif %}
+</div>
+{% endblock %}
+
+{%block body-content %}
+{% container %}
+
+{% row %}
+{% column xs="8" sm="6" md="4" lg="3" %}
+<div id="temp_gauge_holder" style="width: 20%; clear: right; float: left;">
+   {% include "tempsensor/temp_gauge.html" %}
+</div>
+
+<div id="temp_daily_line_holder" style="width: 35%; clear: right; float: left;">
+   {% include "tempsensor/temp_daily_line.html" %} 
+</div>
+
+<div id="temp_monthly_line_holder" style="width: 35%; float: left;">
+   {% include "tempsensor/temp_monthly_line.html" %}
+</div>
+{% endcolumn %}
+{% endrow %}
+
+{% row %}
+{% column xs="8" sm="6" md="4" lg="3" %}
+<div id="humidity_gauge_holder" style="width: 20%; clear: right; float: left;">
+   {% include "humidity/humidity_gauge.html" %}
+</div>
+
+<div id="humidity_daily_line_holder" style="width: 35%; clear: right; float: left;">
+   {% include "humidity/humidity_daily_line.html" %}
+</div>
+
+<div id="humidity_monthly_line_holder" style="width: 35%; clear: right; float: left;">
+   {% include "humidity/humidity_monthly_line.html" %}
+</div>
+{% endcolumn %}
+{% endrow %}
+
+{% endcontainer %}
+{% endblock %}

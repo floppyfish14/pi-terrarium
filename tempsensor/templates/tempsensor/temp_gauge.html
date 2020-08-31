@@ -1,0 +1,24 @@
+<div id="temp_gauge">
+<h3>Temperature Gauge</h3>
+ <div id="{{ temp_chart.get_html_id }}">
+  <script type="text/javascript">
+   google.setOnLoadCallback(drawChart{{ temp_chart.get_html_id }});
+   function drawChart{{ temp_chart.get_html_id }}() {
+   {% block temp_chart_specific_arraytodatatable %}
+     var data = google.visualization.arrayToDataTable({{ temp_chart.get_data_json|safe }});
+   {% endblock %}
+
+   {% if temp_chart.get_options_json %}
+   var options ={{ temp_chart.get_options_json|safe }}
+   {% else %}
+     var options = {};
+   {% endif %}
+
+   var chart = new google.visualization.Gauge(document.getElementById('{{ temp_chart.get_html_id }}'));
+
+   chart.draw(data, options);
+   chart{{ temp_chart.get_html_id }} = chart;
+   }
+  </script>
+ </div>
+</div>

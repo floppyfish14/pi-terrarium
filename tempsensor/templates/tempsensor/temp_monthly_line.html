@@ -1,0 +1,25 @@
+<div id="temp_monthly_line">
+<h3>Temperature Monthly Line Chart</h3>
+ <div id="{{ temp_monthly_line_chart.get_html_id }}">
+    <script type="text/javascript">
+      google.setOnLoadCallback(drawChart{{ temp_monthly_line_chart.get_html_id }});
+      function drawChart{{ temp_monthly_line_chart.get_html_id }}() {
+ 
+      {% block temp_monthly_line_chart_specific_arraytodatatable %}
+       var data = google.visualization.arrayToDataTable({{ temp_monthly_line_chart.get_data_json|safe}});
+      {% endblock %}
+
+      {% if temp_monthly_line_chart.get_options_json %}
+       var options ={{ temp_monthly_line_chart.get_options_json|safe }}
+      {% else %}
+       var options = {};
+      {% endif %}
+
+      var chart = new google.visualization.LineChart(document.getElementById('{{ temp_monthly_line_chart.get_html_id }}'));
+
+      chart.draw(data, options);
+      chart{{ temp_monthly_line_chart.get_html_id }} = chart;
+      }
+     </script>
+ </div>
+</div>

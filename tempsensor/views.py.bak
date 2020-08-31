@@ -1,0 +1,64 @@
+from django.shortcuts import render, reverse, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
+from django.utils import timezone
+
+from .forms import TempForm
+from .models import Temperature
+
+import datetime
+
+from graphos.sources.model import ModelDataSource
+from graphos.renderers import gchart
+
+
+now = timezone.localtime(timezone.now())
+today = datetime.date.today()
+month = today.month
+
+def index(request):
+
+
+    queryset = Temperature.objects.all().order_by('-id')[:1]
+    data_source = ModelDataSource(queryset, fields=['Temp_F'])
+    temp_chart = gchart.GaugeChart(data_source,
+            options = {
+                "greenFrom": 73, "greenTo": 76,
+                "yellowFrom": 76, "yellowTo": 82,
+                "redFrom": 82, "redTo": 100,
+                "max": 100, "majorTicks": [0,20,40,60,80,100], "minorTicks": 10,
+            } 
+    )
+
+    return render(request, 'tempsensor/index.html', {'temp_chart': temp_chart})
+
+def input(request):
+    if request.method == 'POST':
+        form = TempForm(request.POST)
+        if form.is_valid():
+            temp = request.POST.get('new_temp', '')
+            temp_obj = Temperature( Temp_F = temp, reading_time = now )
+            temp_obj.save()
+        return HttpResponseRedirect(reverse('tempsensor:thanks'))
+
+    else:
+        form = TempForm()
+    return render(request, 'tempsensor/input.html', {'form': form})
+
+def thanks(request):
+    return render(request, 'tempsensor/thanks.html')
+
+def daily(request):
+    
+    queryset = Temperature.objects.filter(reading_time__date=today)
+    data_source = ModelDataSource(queryset, fields=['reading_time', 'Temp_F'])
+    temp_daily_line_chart = gchart.LineChart(data_source, options={'title': "Daily Readings"})
+
+    return render(request, 'tempsensor/daily.html', {'temp_daily_line_chart': temp_daily_line_chart})
+
+def monthly(request):
+
+    queryset = Temperature.objects.filter(reading_time__month=month)
+    data_source = ModelDataSource(queryset, fields=['reading_time', 'Temp_F'])
+    temp_monthly_line_chart = gchart.LineChart(data_source, options={'title': "Monthly Redings"})
+
+    return render(request, 'tempsensor/monthly.html', {'temp_monthly_line_chart': temp_monthly_line_chart})

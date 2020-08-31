@@ -1,0 +1,2 @@
+#temp_gauge { float:left; }
+#humidity_gauge {float:left; }

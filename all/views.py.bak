@@ -1,0 +1,77 @@
+from django.shortcuts import  render
+from django.http import HttpResponseRedirect
+
+import datetime
+
+today = datetime.date.today()
+month = today.month
+
+from humidity.models import Humidity
+from tempsensor.models import Temperature
+from all.models import WaterLevel
+
+from graphos.sources.model import ModelDataSource
+from graphos.renderers import gchart
+
+def index(request):  
+    def Humidity_Gauge(self):
+        queryset = Humidity.objects.filter(reading_time__date=today).order_by('-id')[:1]
+        data_source = ModelDataSource(queryset, fields=['Humidity_Percent'])
+        humidity_gauge = gchart.GaugeChart(data_source,
+            options = {
+               "greenFrom": 90, "greenTo": 100,
+                "yellowFrom": 75, "yellowTo": 90,
+                "redFrom": 65, "redTo": 75,
+                "max": 100, "majorTicks": [0,20,40,60,80,100], "minorTicks": 10,     
+            })
+        return humidity_gauge
+
+    def Temperature_Gauge(self):
+        queryset = Temperature.objects.filter(reading_time__date=today).order_by('-id')[:1]
+        data_source = ModelDataSource(queryset, fields=['Temp_F'])
+        temp_gauge = gchart.GaugeChart(data_source,
+            options = {
+                "greenFrom": 73, "greenTo": 76,
+                "yellowFrom": 76, "yellowTo": 84,
+                "redFrom": 84, "redTo": 100,
+                "max": 100, "majorTicks": [0,20,40,60,80,100], "minorTicks": 10,
+            }
+        )
+        return temp_gauge  
+ 
+    def temp_daily_line(self):
+        queryset = Temperature.objects.filter(reading_time__date=today)
+        data_source = ModelDataSource(queryset, fields=['reading_time', 'Temp_F'])
+        temp_daily_line_chart = gchart.LineChart(data_source, options={'title': "Daily Readings"})
+        return temp_daily_line_chart
+	
+    def humidity_daily_line(self):
+        queryset = Humidity.objects.filter(reading_time__date=today)
+        data_source = ModelDataSource(queryset, fields=['reading_time', 'Humidity_Percent'])
+        humidity_daily_line_chart = gchart.LineChart(data_source, options={'title': "Daily Readings"})
+        return humidity_daily_line_chart
+
+    def humidity_monthly_line(self):
+        queryset = Humidity.objects.filter(reading_time__month=month)
+        data_source = ModelDataSource(queryset, fields=['reading_time', 'Humidity_Percent'])
+        humidity_monthly_line_chart = gchart.LineChart(data_source, options={'title': "Monthly Reading" })
+        return humidity_monthly_line_chart
+    
+    def temp_monthly_line(self):
+        queryset = Temperature.objects.filter(reading_time__month=month)
+        data_source = ModelDataSource(queryset, fields=['reading_time', 'Temp_F'])
+        temp_monthly_line_chart = gchart.LineChart(data_source, options={'title': "Monthly Reading"})
+        return temp_monthly_line_chart
+
+    def led_red(self):
+	water_level = WaterLevel.objects.all().order_by('-id')[:1]
+	return water_level
+	
+    return render(request, 'all/index.html', {
+	'temp_chart': Temperature_Gauge(request),
+        'humidity_chart': Humidity_Gauge(request),
+        'temp_daily_line_chart': temp_daily_line(request),
+        'humidity_daily_line_chart': humidity_daily_line(request),
+        'temp_monthly_line_chart': temp_monthly_line(request),
+        'humidity_monthly_line_chart': humidity_monthly_line(request)
+	'water_level': water_level(request)})

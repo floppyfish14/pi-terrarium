@@ -1,0 +1,26 @@
+<div id="humidity_daily_line" style="width: 800px; height:500px;">
+  <h3>Humidity Daily Line Chart</h3>
+   <div id="{{ humidity_daily_line_chart.get_html_id }}">
+    <script type="text/javascript">
+     google.setOnLoadCallback(drawChart{{ humidity_daily_line_chart.get_html_id }});
+     function drawChart{{ humidity_daily_line_chart.get_html_id }}() {
+ 
+     {% block humidity_daily_line_chart_specific_arraytodatatable %}
+     var data = google.visualization.arrayToDataTable({{ humidity_daily_line_chart.get_data_json_daily|safe}});
+     {% endblock %}
+ 	
+     {% if humidity_daily_line_chart.get_options_json %}
+     var options ={{ humidity_daily_line_chart.get_options_json|safe }}
+     {% else %}
+       var options = {};
+     {% endif %}
+ 
+     var chart = new google.visualization.LineChart(document.getElementById('{{ humidity_daily_line_chart.get_html_id }}'));
+
+     chart.draw(data, options);
+     chart{{ humidity_daily_line_chart.get_html_id }} = chart;
+    }
+    </script>
+  </div>
+</div>
+

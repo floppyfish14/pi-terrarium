@@ -1,0 +1,25 @@
+<div id="humidity_monthly_line">
+<h3>Humidity Monthly Line Chart</h3> 
+ <div id="{{ humidity_monthly_line_chart.get_html_id }}">
+ <script type="text/javascript">
+   google.setOnLoadCallback(drawChart{{ humidity_monthly_line_chart.get_html_id }});
+   function drawChart{{ humidity_monthly_line_chart.get_html_id }}() {
+
+   {% block humidity_monthly_line_chart_specific_arraytodatatable %}
+   var data = google.visualization.arrayToDataTable({{ humidity_monthly_line_chart.get_data_json|safe}});
+   {% endblock %}
+
+   {% if humidity_monthly_line_chart.get_options_json %}
+   var options ={{ humidity_monthly_line_chart.get_options_json|safe }}
+   {% else %}
+     var options = {};
+   {% endif %}
+
+   var chart = new google.visualization.LineChart(document.getElementById('{{ humidity_monthly_line_chart.get_html_id }}'));
+
+   chart.draw(data, options);
+   chart{{ humidity_monthly_line_chart.get_html_id }} = chart;
+  }
+ </script>
+ </div>
+</div>
